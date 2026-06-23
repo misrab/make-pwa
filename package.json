@@ -1,0 +1,37 @@
+{
+  "name": "make-pwa",
+  "version": "0.1.0",
+  "description": "Turn a React/Vite app into an installable PWA with a mobile install banner. One component + one scaffold command.",
+  "type": "module",
+  "license": "MIT",
+  "repository": "github:misrab/make-pwa",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "make-pwa": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.2"
+  }
+}
