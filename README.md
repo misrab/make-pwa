@@ -56,12 +56,17 @@ export function App() {
 The browser only offers to install a PWA when **all** of these hold — the
 scaffold sets them up, but the app must be *served* correctly:
 
-- **Secure context** — HTTPS, or `localhost` for dev. On a custom port that's
-  fine: `https://host:8443` is a valid origin and installs independently. (The
-  install prompt never fires on plain `http://` to a remote host.)
+- **Secure context** — HTTPS, or `localhost` for dev. The install prompt never
+  fires on plain `http://` to a remote host.
+- **One app per hostname** — give each app its **own hostname** (e.g.
+  `app.example.com`), not a shared host on a different port. Chrome on Android
+  keys a PWA's install identity on the **hostname and ignores the port**, so
+  `host:8443` and `host:9445` collide — only the first installs, the rest show
+  "Open <first app>". Distinct hostnames = distinct origins = independent
+  installs. (Different ports work on desktop but not Android — don't rely on it.)
 - **Served at the origin root** — `/manifest.json`, `/sw.js` and the icons must
-  resolve. Vite copies `public/*` to the build root, so this is automatic when
-  each app gets its own origin (its own host or port).
+  resolve. Vite copies `public/*` to the build root, so this is automatic once
+  each app has its own origin.
 - **A service worker with a `fetch` handler** — Chrome refuses to fire
   `beforeinstallprompt` without one. The generated `sw.js` includes a no-op
   pass-through handler for exactly this reason; don't remove it.
