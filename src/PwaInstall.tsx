@@ -54,6 +54,7 @@ export function PwaInstall({
   }, [registerServiceWorker, swPath]);
 
   useEffect(() => {
+    if (!isMobile) { setShow(false); return; }
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       (navigator as unknown as { standalone?: boolean }).standalone === true;
@@ -61,12 +62,11 @@ export function PwaInstall({
     if (localStorage.getItem(dismissKey)) return;
     const ios = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(ios);
-    // iOS mobile Safari: show "Add to Home Screen" instructions (the only path
-    // Apple allows; no prompt event). Everywhere else (Android + desktop
-    // Chrome/Edge): show once Chrome has fired beforeinstallprompt, i.e. the SW
-    // is controlling and the app is installable. Until then, show nothing
-    // rather than confusing manual instructions.
-    if ((ios && isMobile) || _deferredPrompt) setShow(true);
+    // On iOS we always show (no prompt event, share sheet is the only path).
+    // On Android we only show once Chrome has fired beforeinstallprompt —
+    // i.e. the SW is controlling and the app is installable. Until then,
+    // showing confusing manual instructions is worse than showing nothing.
+    if (ios || _deferredPrompt) setShow(true);
   }, [isMobile, dismissKey]);
 
   // Pick up the prompt if Chrome fires it after mount, and show the banner.
