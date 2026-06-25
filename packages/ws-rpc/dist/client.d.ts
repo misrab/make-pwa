@@ -16,6 +16,8 @@ export interface WsRpcOptions {
 }
 type EventHandler<TEvent> = (event: TEvent) => void;
 type StatusHandler = (status: ConnectionStatus) => void;
+/** Exponential backoff delay for a given (0-based) attempt, capped at maxMs. */
+export declare function backoffDelay(attempt: number, minMs: number, maxMs: number): number;
 /**
  * Generic reconnecting WebSocket-RPC client.
  *

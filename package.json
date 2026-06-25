@@ -25,6 +25,10 @@
   },
   "scripts": {
     "build": "npm run build -w @misrab/pwa && npm run build -w @misrab/ws-rpc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.6"
   }
 }

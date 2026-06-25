@@ -24,6 +24,11 @@ const DEFAULT_RECONNECT_MIN_MS = 1500;
 const DEFAULT_RECONNECT_MAX_MS = 30_000;
 const DEFAULT_REQUEST_TIMEOUT_MS = 15_000;
 
+/** Exponential backoff delay for a given (0-based) attempt, capped at maxMs. */
+export function backoffDelay(attempt: number, minMs: number, maxMs: number): number {
+  return Math.min(minMs * 2 ** attempt, maxMs);
+}
+
 /**
  * Generic reconnecting WebSocket-RPC client.
  *
@@ -145,7 +150,7 @@ export class WsRpcClient<TCommand extends { type: string; id?: string } = { type
       this.setStatus("closed");
       this.rejectAllPending();
       if (this.shouldReconnect) {
-        const delay = Math.min(this.reconnectMinMs * 2 ** this.reconnectAttempts++, this.reconnectMaxMs);
+        const delay = backoffDelay(this.reconnectAttempts++, this.reconnectMinMs, this.reconnectMaxMs);
         this.reconnectTimer = window.setTimeout(() => this.open(), delay);
       }
     };
