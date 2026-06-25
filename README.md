@@ -5,7 +5,7 @@ Drop-in web utilities for React/Vite apps. Monorepo with two packages:
 | Package | Install | Purpose |
 |---------|---------|---------|
 | **make-pwa** (`packages/pwa`) | `npm i github:misrab/web-kit` | PWA install banner + scaffold CLI |
-| **@misrab/ws-rpc** (`packages/ws-rpc`) | `npm i github:misrab/web-kit#main:packages/ws-rpc` | Reconnecting WebSocket-RPC client + React hook |
+| **@misrab/ws-rpc** (`packages/ws-rpc`) | `npm i github:misrab/web-kit` then `import from "make-pwa/ws-rpc"` | Reconnecting WebSocket-RPC client + React hook |
 
 Legacy `npm i github:misrab/web-kit` still resolves to the PWA package via GitHub redirect.
 
@@ -134,13 +134,13 @@ Generic reconnecting WebSocket-RPC client for browser apps.
 ## Install
 
 ```bash
-npm i github:misrab/web-kit#main:packages/ws-rpc
+npm i github:misrab/web-kit
 ```
 
 ## Use
 
 ```ts
-import { WsRpcClient, useWsRpc } from "@misrab/ws-rpc";
+import { WsRpcClient, useWsRpc } from "make-pwa/ws-rpc";
 
 const client = new WsRpcClient({
   getUrl: () => `wss://${location.host}/ws?session=${sessionId}`,
