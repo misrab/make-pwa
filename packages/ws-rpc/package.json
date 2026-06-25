@@ -1,0 +1,30 @@
+{
+  "name": "@misrab/ws-rpc",
+  "version": "0.1.0",
+  "description": "Reconnecting WebSocket-RPC client with exponential backoff and mobile-friendly foreground reconnect.",
+  "type": "module",
+  "license": "MIT",
+  "repository": "github:misrab/web-kit",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,3 +1,16 @@
+# @misrab/web-kit
+
+Drop-in web utilities for React/Vite apps. Monorepo with two packages:
+
+| Package | Install | Purpose |
+|---------|---------|---------|
+| **make-pwa** (`packages/pwa`) | `npm i github:misrab/web-kit` | PWA install banner + scaffold CLI |
+| **@misrab/ws-rpc** (`packages/ws-rpc`) | `npm i github:misrab/web-kit#main:packages/ws-rpc` | Reconnecting WebSocket-RPC client + React hook |
+
+Legacy `npm i github:misrab/web-kit` still resolves to the PWA package via GitHub redirect.
+
+---
+
 # make-pwa
 
 Turn a React/Vite app into an installable PWA with a mobile install banner —
@@ -19,7 +32,7 @@ Turn a React/Vite app into an installable PWA with a mobile install banner —
 From GitHub (no publish needed):
 
 ```bash
-npm i github:misrab/make-pwa
+npm i github:misrab/web-kit
 ```
 
 ## Use (2 steps)
@@ -111,3 +124,38 @@ Also exported: `useIsMobile()` and `registerSW(path?)`.
   are served at the origin root with the right scope automatically.
 - The service worker intentionally does no asset caching. For offline support,
   migrate to `vite-plugin-pwa`.
+
+---
+
+# @misrab/ws-rpc
+
+Generic reconnecting WebSocket-RPC client for browser apps.
+
+## Install
+
+```bash
+npm i github:misrab/web-kit#main:packages/ws-rpc
+```
+
+## Use
+
+```ts
+import { WsRpcClient, useWsRpc } from "@misrab/ws-rpc";
+
+const client = new WsRpcClient({
+  getUrl: () => `wss://${location.host}/ws?session=${sessionId}`,
+});
+
+client.onMessage((event) => { /* streamed events */ });
+client.connect();
+
+await client.request({ type: "get_state" });
+client.send({ type: "abort" });
+```
+
+Features: exponential backoff (1.5s → 30s), immediate reconnect on
+`visibilitychange` → visible and `online` (mobile PWA backgrounding),
+correlated request/response by `id`, pending rejection on disconnect.
+
+Also exported: `useWsRpc({ client, onMessage, onOpen })` React hook.
+
