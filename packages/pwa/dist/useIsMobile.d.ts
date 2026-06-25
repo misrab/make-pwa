@@ -1,2 +1,2 @@
-/** True when the viewport is phone-sized. Reactive to resize/rotation. */
+/** True when the device is an actual phone. Reactive to resize/rotation. */
 export declare function useIsMobile(query?: string): boolean;

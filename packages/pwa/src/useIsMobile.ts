@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
-const MOBILE_QUERY = "(max-width: 768px)";
+// Phone-sized AND a touch (coarse) pointer — so a narrow desktop window with a
+// mouse is never mistaken for mobile.
+const MOBILE_QUERY = "(max-width: 768px) and (pointer: coarse)";
 
-/** True when the viewport is phone-sized. Reactive to resize/rotation. */
+/** True when the device is an actual phone. Reactive to resize/rotation. */
 export function useIsMobile(query: string = MOBILE_QUERY): boolean {
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.matchMedia(query).matches,
